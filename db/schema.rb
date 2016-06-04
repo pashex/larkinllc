@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20160604122842) do
+ActiveRecord::Schema.define(version: 20160604143205) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -27,6 +27,9 @@ ActiveRecord::Schema.define(version: 20160604122842) do
     t.datetime "updated_at", null: false
   end
 
+  add_index "locations", ["address"], name: "index_locations_on_address", using: :btree
+  add_index "locations", ["name"], name: "index_locations_on_name", using: :btree
+
   create_table "orders", force: :cascade do |t|
     t.date     "delivery_date"
     t.integer  "shift",          default: 0
@@ -39,5 +42,9 @@ ActiveRecord::Schema.define(version: 20160604122842) do
     t.datetime "updated_at",                   null: false
     t.string   "phone"
   end
+
+  add_index "orders", ["destination_id"], name: "index_orders_on_destination_id", using: :btree
+  add_index "orders", ["number"], name: "index_orders_on_number", using: :btree
+  add_index "orders", ["origin_id"], name: "index_orders_on_origin_id", using: :btree
 
 end
