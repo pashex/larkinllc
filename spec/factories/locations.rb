@@ -6,6 +6,5 @@ FactoryGirl.define do
     state { Faker::Address.state_abbr }
     country { Faker::Address.country_code }
     zip { Faker::Address.zip }
-    phone { Faker::PhoneNumber.phone_number }
   end
 end

@@ -6,5 +6,6 @@ FactoryGirl.define do
     volume { Faker::Number.decimal(2) }
     quantity { Faker::Number.between(0, 20) }
     delivery_date { Faker::Date.forward(7) }
+    phone { Faker::PhoneNumber.phone_number }
   end
 end
