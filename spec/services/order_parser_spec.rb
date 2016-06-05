@@ -37,11 +37,13 @@ RSpec.describe OrderParser do
           Date.parse('2014-09-16'), 'not_specified', '(372)327-5842', 75.6, 2 ]
         expect(first_order.origin).to eq Location.find_by(name: 'Larkin LLC')
         expect(first_order.destination).to eq Location.find_by(name: 'Shayne Dooley')
+        expect(first_order.reverse).to be_falsey
 
         expect(attrs.map { |attr| second_order.send(attr.to_sym) }).to eq [
           Date.parse('2014-09-17'), 'evening', '1-404-888-3360', 15.53, 1 ]
         expect(second_order.origin).to eq Location.find_by(name: 'Dr. Hettie Conroy')
         expect(second_order.destination).to eq Location.find_by(name: 'Larkin LLC')
+        expect(second_order.reverse).to be_truthy
       end
     end
 

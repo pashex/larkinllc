@@ -11,10 +11,21 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20160604143205) do
+ActiveRecord::Schema.define(version: 20160605141550) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
+
+  create_table "loads", force: :cascade do |t|
+    t.date     "delivery_date"
+    t.integer  "shift",            default: 1
+    t.float    "volume",           default: 0.0, null: false
+    t.integer  "quantity",         default: 0,   null: false
+    t.datetime "created_at",                     null: false
+    t.datetime "updated_at",                     null: false
+    t.float    "reverse_volume",   default: 0.0, null: false
+    t.integer  "reverse_quantity", default: 0,   null: false
+  end
 
   create_table "locations", force: :cascade do |t|
     t.string   "name"
@@ -38,12 +49,16 @@ ActiveRecord::Schema.define(version: 20160604143205) do
     t.integer  "quantity",       default: 0
     t.integer  "origin_id"
     t.integer  "destination_id"
-    t.datetime "created_at",                   null: false
-    t.datetime "updated_at",                   null: false
+    t.datetime "created_at",                     null: false
+    t.datetime "updated_at",                     null: false
     t.string   "phone"
+    t.integer  "load_id"
+    t.integer  "position"
+    t.boolean  "reverse",        default: false
   end
 
   add_index "orders", ["destination_id"], name: "index_orders_on_destination_id", using: :btree
+  add_index "orders", ["load_id"], name: "index_orders_on_load_id", using: :btree
   add_index "orders", ["number"], name: "index_orders_on_number", using: :btree
   add_index "orders", ["origin_id"], name: "index_orders_on_origin_id", using: :btree
 

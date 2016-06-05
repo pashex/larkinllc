@@ -4,6 +4,7 @@ module OrderParser
 
   SHIFT_VALUES = { 'M' => 'morning', 'N' => 'noon', 'E' => 'evening' }
   KEY_FIELDS = [ :name, :address, :city, :state, :country ]
+  OUR_COMPANY = { name: 'Larkin LLC', address: '1505 S BLOUNT ST', city: 'RALEIGH' }
 
   def perform(filename)
     errors = []
@@ -41,8 +42,9 @@ module OrderParser
           origin ||= Location.create!(origin_hash)
           destination = Location.find_by(destination_hash.select { |k, v| KEY_FIELDS.include? k })
           destination ||= Location.create!(destination_hash)
+          reverse = destination == Location.find_by(OUR_COMPANY)
 
-          order = Order.create!(order_hash.merge(origin: origin, destination: destination))
+          order = Order.create!(order_hash.merge(origin: origin, destination: destination, reverse: reverse))
         end
       rescue Exception => e
         errors << ["row: #{index}", e.message]

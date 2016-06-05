@@ -5,4 +5,8 @@ en:
         order:
           attributes:
             destination:
-              same: should be different from the origin 
+              same: should be different from the origin
+            load:
+              invalid_delivery_date: delivery date should be same as order delivery date
+              invalid_shift: shift should be same as order shift
+              max_volume_exceeded: max volume exceeded
