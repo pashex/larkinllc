@@ -3,9 +3,10 @@ class OrdersController < ApplicationController
 
   def index
     @loads = Load.by_date(params[:date]).order(:shift).includes(orders: [:origin, :destination])
+    @loads_present = !@loads.empty?
     orders = Order.where(load: nil).by_date(params[:date]).includes(:origin, :destination)
-    @shifted_orders = orders.shifted.order(:shift)
-    @not_shifted_orders = orders.not_specified
+    @shifted_orders = orders.shifted.order(:shift, volume: :desc)
+    @not_shifted_orders = orders.not_specified.order(volume: :desc)
   end
 
   def show
@@ -16,7 +17,7 @@ class OrdersController < ApplicationController
 
   def update
     unless @order.update(order_params)
-      flash[:errors] = @order.errors
+      flash[:errors] = @order.errors.full_messages
     end
     redirect_to orders_url(date: params[:date])
   end
@@ -36,6 +37,6 @@ class OrdersController < ApplicationController
   end
 
   def order_params
-    params.require(:order).permit(:load_id)
+    params.require(:order).permit(:load_id, :delivery_date, :shift)
   end
 end

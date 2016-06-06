@@ -1,0 +1,27 @@
+h1 = t('.header')
+
+.origin
+  = @order.origin.info
+.destination
+  = @order.destination.info
+
+.number
+  = t('.number')
+  br
+  = @order.number
+
+.volume
+  = t('.volume')
+  br
+  = @order.volume
+
+.quantity
+  = t('quantity')
+  br
+  = @order.quantity
+
+= form_for @order do |f|
+  = hidden_field_tag :date, @order.delivery_date.to_s
+  = f.date_select :delivery_date
+  = f.select :shift, Order.shifts.keys
+  = f.submit

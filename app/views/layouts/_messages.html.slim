@@ -1,0 +1,10 @@
+- flash.each do |name, msg|
+  div.alert class="alert-#{ name == :success ? "success" : "danger" }"
+    - if msg.is_a?(String)
+      div id="flash_#{name}" = msg
+    - if msg.is_a?(Array)
+      - msg.each_with_index do |msg_str, index|
+        div id="flash_#{name}_#{index + 1}" = msg_str
+       
+    
+

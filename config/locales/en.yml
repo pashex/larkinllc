@@ -10,3 +10,18 @@ en:
               invalid_delivery_date: delivery date should be same as order delivery date
               invalid_shift: shift should be same as order shift
               max_volume_exceeded: max volume exceeded
+  orders:
+    index:
+      no_loads: No Loads
+      create_loads: Create Loads
+      unloaded_orders: Unloaded orders
+      loads_for_date: "%{date} Loads"
+      no_orders_for_date: No orders for this date
+    edit:
+      header: Edit order delivery information
+    order:
+      load: to Load
+
+  loads:
+    load:
+      load: Load

@@ -2,18 +2,21 @@
 - destination = order.destination
 
 tr
-  - if @loads
-    td
+  td
+    - if @loads_present
       = form_for order, method: :patch do |f|
         = hidden_field_tag :date, params[:date]
         = f.select :load_id, @loads.map {|l| [l.shift, l.id]}, include_blank: true
-        = f.submit
+        = f.submit t('.load')
 
   td = order.shift
-  td = [origin.name, origin.address, origin.city, origin.state, origin.country, origin.zip].join(", ")
-  td = [destination.name, destination.address, destination.city, destination.state, destination.country, destination.zip].join(", ")
+  td = origin.info
+  td = destination.info
   td = order.phone
   td = order.number
   td = order.volume
   td = order.quantity
+  td
+    - unless order.load 
+      = link_to t('.edit'), edit_order_path(order)
 

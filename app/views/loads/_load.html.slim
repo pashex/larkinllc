@@ -1,2 +1,14 @@
 h3 = "#{t('.load')} #{load.shift}"
-= render load.orders
+
+.volume
+  = "#{Load.human_attribute_name(:volume)} : #{load.volume}; "
+  = "#{Load.human_attribute_name(:reverse_volume)} : #{load.reverse_volume}"
+
+.quantity
+  = "#{Load.human_attribute_name(:quantity)} : #{load.quantity}; "
+  = "#{Load.human_attribute_name(:reverse_quantity)} : #{load.reverse_quantity}"
+
+table
+  - unless load.orders.empty?
+    = render 'shared/orders_table_header'
+    = render load.orders

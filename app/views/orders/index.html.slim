@@ -4,17 +4,15 @@
     = hidden_field_tag :date, params[:date]
     = submit_tag t('.create_loads')
 - else
+  h2 = t('.loads_for_date', date: params[:date])
   = render @loads
 
-table
-  tr
-    th = Order.human_attribute_name(:shift)
-    th = Order.human_attribute_name(:origin)
-    th = Order.human_attribute_name(:destination)
-    th = Order.human_attribute_name(:phone)
-    th = Order.human_attribute_name(:number)
-    th = Order.human_attribute_name(:volume)
-    th = Order.human_attribute_name(:quantity)
+h2 = t('.unloaded_orders')
 
-  = render @shifted_orders
-  = render @not_shifted_orders
+table
+  - unless @shifted_orders.empty? && @not_shifted_orders.empty?
+    = render 'shared/orders_table_header'
+    = render @shifted_orders
+    = render @not_shifted_orders
+  - else
+    h3 = t('.no_orders_for_date')
