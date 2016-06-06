@@ -6,10 +6,10 @@ module OrderParser
   KEY_FIELDS = [ :name, :address, :city, :state, :country ]
   OUR_COMPANY = { name: 'Larkin LLC', address: '1505 S BLOUNT ST', city: 'RALEIGH' }
 
-  def perform(filename)
+  def perform(file)
     errors = []
 
-    CSV.read(filename).each_with_index do |row, index|
+    CSV.read(file.path).each_with_index do |row, index|
       next if index == 0
       row = row.map { |cell| cell.to_s.strip }
 

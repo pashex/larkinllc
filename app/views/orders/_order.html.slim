@@ -1,0 +1,19 @@
+- origin = order.origin
+- destination = order.destination
+
+tr
+  - if @loads
+    td
+      = form_for order, method: :patch do |f|
+        = hidden_field_tag :date, params[:date]
+        = f.select :load_id, @loads.map {|l| [l.shift, l.id]}, include_blank: true
+        = f.submit
+
+  td = order.shift
+  td = [origin.name, origin.address, origin.city, origin.state, origin.country, origin.zip].join(", ")
+  td = [destination.name, destination.address, destination.city, destination.state, destination.country, destination.zip].join(", ")
+  td = order.phone
+  td = order.number
+  td = order.volume
+  td = order.quantity
+

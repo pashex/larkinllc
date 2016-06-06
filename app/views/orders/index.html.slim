@@ -1,0 +1,20 @@
+- if @loads.empty?
+  h2 = t('.no_loads')
+  = form_tag loads_path do
+    = hidden_field_tag :date, params[:date]
+    = submit_tag t('.create_loads')
+- else
+  = render @loads
+
+table
+  tr
+    th = Order.human_attribute_name(:shift)
+    th = Order.human_attribute_name(:origin)
+    th = Order.human_attribute_name(:destination)
+    th = Order.human_attribute_name(:phone)
+    th = Order.human_attribute_name(:number)
+    th = Order.human_attribute_name(:volume)
+    th = Order.human_attribute_name(:quantity)
+
+  = render @shifted_orders
+  = render @not_shifted_orders

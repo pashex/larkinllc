@@ -10,6 +10,8 @@ class Load < ActiveRecord::Base
   validate :check_orders_delivery_date
   validate :check_orders_shift
 
+  scope :by_date, -> (date_str) { where(delivery_date: (Date.parse(date_str) rescue nil)) }
+
   private
 
   def check_orders_delivery_date
