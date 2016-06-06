@@ -1,5 +1,5 @@
 class OrdersController < ApplicationController
-  before_action :find_order, only: [:show, :edit, :update, :destroy]
+  before_action :find_order, only: [:show, :edit, :update, :shift, :destroy]
 
   def index
     @loads = Load.by_date(params[:date]).order(:shift).includes(orders: [:origin, :destination])
@@ -18,6 +18,15 @@ class OrdersController < ApplicationController
   def update
     unless @order.update(order_params)
       flash[:errors] = @order.errors.full_messages
+    end
+    redirect_to orders_url(date: params[:date])
+  end
+
+  def shift
+    if params[:reverse]
+      @order.move_higher
+    else
+      @order.move_lower
     end
     redirect_to orders_url(date: params[:date])
   end

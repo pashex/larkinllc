@@ -21,6 +21,8 @@ en:
       header: Edit order delivery information
     order:
       load: to Load
+      up: Up 
+      down: Down
 
   loads:
     load:

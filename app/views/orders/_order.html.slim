@@ -3,6 +3,9 @@
 
 tr
   td
+    - if order.load
+      = order.position
+  td
     - if @loads_present
       = form_for order, method: :patch do |f|
         = hidden_field_tag :date, params[:date]
@@ -17,6 +20,10 @@ tr
   td = order.volume
   td = order.quantity
   td
-    - unless order.load 
+    - if order.load 
+      = link_to t('.up'), shift_order_path(order, date: params[:date], reverse: true), method: :patch
+      = link_to t('.down'), shift_order_path(order, date: params[:date]), method: :patch
+    - else
       = link_to t('.edit'), edit_order_path(order)
+      
 
