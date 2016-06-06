@@ -21,7 +21,6 @@ h1 = t('.header')
   = @order.quantity
 
 = form_for @order do |f|
-  = hidden_field_tag :date, @order.delivery_date.to_s
   = f.date_select :delivery_date
   = f.select :shift, Order.shifts.keys
   = f.submit

@@ -20,7 +20,7 @@ class Order < ActiveRecord::Base
   enum shift: { not_specified: 0, morning: 1, noon: 2, evening: 3 }
 
   scope :shifted, -> { where.not(shift: 0) }
-  scope :by_date, -> (date_str) { where(delivery_date: (Date.parse(date_str) rescue nil)) }
+  scope :by_date, -> (date) { where(delivery_date: date) }
 
   private
 

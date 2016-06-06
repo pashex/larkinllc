@@ -8,7 +8,7 @@ tr
   td
     - if @loads_present
       = form_for order, method: :patch do |f|
-        = hidden_field_tag :date, params[:date]
+        = hidden_field_tag :date, @date
         = f.select :load_id, @loads.map {|l| [l.shift, l.id]}, include_blank: true
         = f.submit t('.load')
 
@@ -21,8 +21,8 @@ tr
   td = order.quantity
   td
     - if order.load 
-      = link_to t('.up'), shift_order_path(order, date: params[:date], reverse: true), method: :patch
-      = link_to t('.down'), shift_order_path(order, date: params[:date]), method: :patch
+      = link_to t('.up'), shift_order_path(order, date: @date, reverse: true), method: :patch
+      = link_to t('.down'), shift_order_path(order, date: @date), method: :patch
     - else
       = link_to t('.edit'), edit_order_path(order)
       

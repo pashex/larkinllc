@@ -12,7 +12,7 @@ en:
               max_volume_exceeded: max volume exceeded
   orders:
     index:
-      no_loads: No Loads
+      no_loads: "No Loads for %{date}"
       create_loads: Create Loads
       unloaded_orders: Unloaded orders
       loads_for_date: "%{date} Loads"
