@@ -36,8 +36,9 @@ class OrdersController < ApplicationController
   end
 
   def import
-    flash[:errors] = OrderParser.perform(params[:file])
-    redirect_to dispatcher_dashboards_url
+    flash[:errors] = OrderParser.perform(params[:file], strategy: params[:strategy])
+    flash[:errors] << I18n.t('.errors_in_csv') unless flash[:errors].empty?
+    redirect_to dispatcher_url
   end
 
   private
@@ -51,7 +52,7 @@ class OrdersController < ApplicationController
   end
 
   def order_params
-    params.require(:order).permit(:load_id, :delivery_date, :shift)
+    params.require(:order).permit(:load_id, :delivery_date, :shift, :number)
   end
 
 end

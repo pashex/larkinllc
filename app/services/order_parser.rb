@@ -6,7 +6,7 @@ module OrderParser
   KEY_FIELDS = [ :name, :address, :city, :state, :country ]
   OUR_COMPANY = { name: 'Larkin LLC', address: '1505 S BLOUNT ST', city: 'RALEIGH' }
 
-  def perform(file)
+  def perform(file, strategy: :create)
     errors = []
 
     CSV.read(file.path).each_with_index do |row, index|
@@ -43,8 +43,12 @@ module OrderParser
           destination = Location.find_by(destination_hash.select { |k, v| KEY_FIELDS.include? k })
           destination ||= Location.create!(destination_hash)
           reverse = destination == Location.find_by(OUR_COMPANY)
+          order_hash = order_hash.merge(origin: origin, destination: destination, reverse: reverse)
 
-          order = Order.create!(order_hash.merge(origin: origin, destination: destination, reverse: reverse))
+          if strategy == 'update'
+            next if Order.find_by(order_hash.merge(shift: Order.shifts[order_hash[:shift]]))
+          end
+          order = Order.create!(order_hash)
         end
       rescue Exception => e
         errors << ["row: #{index}", e.message]

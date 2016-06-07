@@ -15,6 +15,17 @@ RSpec.describe OrderParser do
         expect(Order.count).to eq 401
       end
 
+      it 'should not create duplicate orders when strategy update' do
+        File.open(example_filename) do |file|
+          OrderParser.perform(file)
+        end
+        errors = File.open(example_filename) do |file|
+          OrderParser.perform(file, strategy: 'update')
+        end
+        expect(errors).to be_empty
+        expect(Order.count).to eq 401
+      end
+
       it 'should create locations without duplication' do
         errors = File.open(short_example_filename) do |file|
           OrderParser.perform(file)

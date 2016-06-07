@@ -24,5 +24,6 @@ h1 = t('.header')
   = f.date_select :delivery_date
   = f.select :shift, Order.shifts.keys
   - if @order.number.empty?
-    = f.text :number
+    = f.label :number
+    = f.text_field :number
   = f.submit

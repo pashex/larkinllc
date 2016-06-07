@@ -1,8 +1,16 @@
+h2 = t('.orders dates')
 ul
   - @dates.each do |date|
     li
       = link_to "#{date || 'Date not specified'}", orders_path(date: date)
 
+h2 = t('.import new orders')
 = form_tag import_orders_path, multipart: true do
+  = file_field_tag :file
+  = submit_tag
+
+h2 = t('.import orders with update strategy')
+= form_tag import_orders_path, multipart: true do
+  = hidden_field_tag :strategy, 'update'
   = file_field_tag :file
   = submit_tag
