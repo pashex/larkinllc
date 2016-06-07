@@ -1,0 +1,20 @@
+- origin = order.origin
+- destination = order.destination
+- load = order.load
+= "\nCheckPoint # "
+= order.position
+= "\n"
+- if order.reverse?
+  = "Reverse order\n"
+  = origin.info
+- else
+  = destination.info
+= "\nPhone : "
+= order.phone
+= "\nNumber : "
+= order.number
+= "\nVolume : "
+= order.volume
+= "\nQuanity : "
+= order.quantity
+= "\n"

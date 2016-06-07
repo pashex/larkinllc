@@ -17,3 +17,7 @@ table
   = link_to t('.complete'), complete_load_path(load, date: @date), data: { confirm: 'Are you sure?' }, method: :patch
 - else
   h3 = "#{t('.completed')}"
+
+- if @allow_export
+  = link_to t('.export'), export_load_path(load, date: @date, format: :txt), target: '_blank'
+

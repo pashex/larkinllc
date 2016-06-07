@@ -49,4 +49,5 @@ class Order < ActiveRecord::Base
       errors.add :load, :max_volume_exceeded
     end
   end
+
 end

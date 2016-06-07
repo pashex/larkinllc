@@ -1,0 +1,20 @@
+| Delivery Date: 
+= @load.delivery_date
+= "\n"
+| Delivery Shift: 
+= @load.shift
+= "\n"
+| Load Summary Volume: 
+= @load.volume
+= "\n"
+| Load Summary Quantity: 
+= @load.quantity
+= "\n"
+| Load Reverse Volume: 
+= @load.reverse_volume
+= "\n"
+| Load Reverse Quantity: 
+= @load.reverse_quantity
+= "\n"
+
+= render @load.orders.order(:position)

@@ -11,6 +11,13 @@ en:
               invalid_delivery_date: delivery date should be same as order delivery date
               invalid_shift: shift should be same as order shift
               max_volume_exceeded: max volume exceeded
+        load:
+          attributes:
+            orders:
+              invalid_delivery_date: delivery date should be same as load delivery date
+              invalid_shift: shift should be same as load shift
+              invalid_reverse_positions: should be in the end of load list if reverse
+
   orders:
     index:
       no_loads: "No Loads for %{date}"

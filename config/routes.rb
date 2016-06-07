@@ -4,12 +4,14 @@ Rails.application.routes.draw do
     post :import, on: :collection
   end
 
-  resources :loads, only: [:create] do
+  resources :loads, only: [:index, :create] do
     patch :complete, on: :member
+    get :export, on: :member
   end
 
   scope :dashboards, controller: :dashboards do
     get :dispatcher
+    get :driver
   end
 
   root to: 'dashboards#dispatcher'

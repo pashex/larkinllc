@@ -43,6 +43,17 @@ RSpec.describe Load, type: :model do
           end
           it { should be_valid }
         end
+
+        describe 'load complete validation' do
+          it 'load should no be valid if reverse order is not last' do
+            first_order.update!(position: 1, reverse: true)
+            second_order.update!(position: 2)
+            load.update(completed: true)
+            expect(load.reload.completed).to be_falsey
+            expect(load.errors.full_messages).to eq [
+              "Orders should be in the end of load list if reverse"]
+          end
+        end
       end
     end
 

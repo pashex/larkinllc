@@ -9,9 +9,9 @@ class Load < ActiveRecord::Base
 
   validate :check_orders_delivery_date
   validate :check_orders_shift
+  validate :check_reverse_orders_position
 
   scope :by_date, -> (date) { where(delivery_date: date) }
-  scope :uncompleted, -> { where(completed: false) }
 
   private
 
@@ -24,6 +24,15 @@ class Load < ActiveRecord::Base
   def check_orders_shift
     unless orders.map(&:shift).all? { |order_shift| order_shift == 'not_specified' || order_shift == shift }
       errors.add :orders, :invalid_shift
+    end
+  end
+
+  def check_reverse_orders_position
+    first_reverse_order = orders.where(reverse: true).order(:position).first
+    return true unless first_reverse_order
+    after_orders = orders.where('position > ?', first_reverse_order.position)
+    if after_orders.where(reverse: false).any?
+      errors.add :orders, :invalid_reverse_positions
     end
   end
 

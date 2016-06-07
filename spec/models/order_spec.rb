@@ -97,7 +97,6 @@ RSpec.describe Order, type: :model do
             "Load max volume exceeded"]
         end
       end
-
     end
   end
 end

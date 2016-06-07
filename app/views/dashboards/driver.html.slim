@@ -1,0 +1,5 @@
+h2 = t('.loads dates')
+ul
+  - @dates.each do |date|
+    li
+      = link_to "#{date}", loads_path(date: date)
