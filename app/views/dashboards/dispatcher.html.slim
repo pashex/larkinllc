@@ -1,6 +1,12 @@
 h2 = t('.orders dates')
+h3 = t('.completed_dates')
 ul
-  - @dates.each do |date|
+  - @completed_dates.each do |date|
+    li
+      = link_to "#{date}", orders_path(date: date)
+h3 = t('.uncompleted_dates')
+ul
+  - @uncompleted_dates.each do |date|
     li
       = link_to "#{date || 'Date not specified'}", orders_path(date: date)
 
