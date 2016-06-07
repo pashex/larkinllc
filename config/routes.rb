@@ -4,7 +4,9 @@ Rails.application.routes.draw do
     post :import, on: :collection
   end
 
-  resources :loads, only: [:create]
+  resources :loads, only: [:create] do
+    patch :complete, on: :member
+  end
 
   scope :dashboards, controller: :dashboards do
     get :dispatcher

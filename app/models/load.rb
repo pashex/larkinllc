@@ -11,6 +11,7 @@ class Load < ActiveRecord::Base
   validate :check_orders_shift
 
   scope :by_date, -> (date) { where(delivery_date: date) }
+  scope :uncompleted, -> { where(completed: false) }
 
   private
 

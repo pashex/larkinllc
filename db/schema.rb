@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20160605141550) do
+ActiveRecord::Schema.define(version: 20160607100159) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -19,13 +19,17 @@ ActiveRecord::Schema.define(version: 20160605141550) do
   create_table "loads", force: :cascade do |t|
     t.date     "delivery_date"
     t.integer  "shift",            default: 1
-    t.float    "volume",           default: 0.0, null: false
-    t.integer  "quantity",         default: 0,   null: false
-    t.datetime "created_at",                     null: false
-    t.datetime "updated_at",                     null: false
-    t.float    "reverse_volume",   default: 0.0, null: false
-    t.integer  "reverse_quantity", default: 0,   null: false
+    t.float    "volume",           default: 0.0,   null: false
+    t.integer  "quantity",         default: 0,     null: false
+    t.datetime "created_at",                       null: false
+    t.datetime "updated_at",                       null: false
+    t.float    "reverse_volume",   default: 0.0,   null: false
+    t.integer  "reverse_quantity", default: 0,     null: false
+    t.boolean  "completed",        default: false
   end
+
+  add_index "loads", ["delivery_date", "shift"], name: "index_loads_on_delivery_date_and_shift", using: :btree
+  add_index "loads", ["delivery_date"], name: "index_loads_on_delivery_date", using: :btree
 
   create_table "locations", force: :cascade do |t|
     t.string   "name"
@@ -42,8 +46,6 @@ ActiveRecord::Schema.define(version: 20160605141550) do
   add_index "locations", ["name"], name: "index_locations_on_name", using: :btree
 
   create_table "orders", force: :cascade do |t|
-    t.date     "delivery_date"
-    t.integer  "shift",          default: 0
     t.string   "number"
     t.float    "volume",         default: 0.0
     t.integer  "quantity",       default: 0
@@ -55,6 +57,8 @@ ActiveRecord::Schema.define(version: 20160605141550) do
     t.integer  "load_id"
     t.integer  "position"
     t.boolean  "reverse",        default: false
+    t.date     "delivery_date"
+    t.integer  "shift",          default: 0
   end
 
   add_index "orders", ["destination_id"], name: "index_orders_on_destination_id", using: :btree

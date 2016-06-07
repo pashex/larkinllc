@@ -12,3 +12,8 @@ table
   - unless load.orders.empty?
     = render 'shared/orders_table_header'
     = render load.orders.order(:position)
+
+- unless load.completed?
+  = link_to t('.complete'), complete_load_path(load, date: @date), data: { confirm: 'Are you sure?' }, method: :patch
+- else
+  h3 = "#{t('.completed')}"
