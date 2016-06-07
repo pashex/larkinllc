@@ -1,0 +1,4 @@
+= form_tag sessions_path do
+  = email_field_tag :email, params[:email], required: true, placeholder: User.human_attribute_name(:email)
+  = password_field_tag :password, nil, required: true, placeholder: User.human_attribute_name(:password)
+  = submit_tag t('.enter')

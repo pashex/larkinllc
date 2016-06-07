@@ -1,5 +1,10 @@
 en:
   errors_in_csv: These lines have not been imported. Please fix errors in file and import again with UPDATE strategy
+  sessions:
+    new:
+      enter: Enter
+    create: 
+      login_error: Login error, try again
   activerecord:
     errors:
       models:

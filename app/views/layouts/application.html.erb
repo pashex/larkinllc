@@ -7,10 +7,14 @@
   <%= csrf_meta_tags %>
 </head>
 <body>
-<%= render "layouts/messages" %>
 <div>
   <%= link_to "HOME", root_path %>
+  <% if current_user %>
+    <%= link_to "LOGOUT", logout_path, method: :post %>
+  <% end %>
 </div>
+<%= render "layouts/messages" %>
+
 <%= yield %>
 
 </body>
