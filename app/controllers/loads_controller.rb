@@ -3,8 +3,7 @@ class LoadsController < ApplicationController
   before_action :find_load, only: [:complete]
 
   def index
-    @loads = Load.by_date(@date).order(:shift).includes(orders: [:origin, :destination]).where(completed: true)
-    @allow_export = true
+    @loads = Load.for_truck_and_date(current_user.truck_number, @date).order(:shift).includes(orders: [:origin, :destination]).where(completed: true)
   end
 
   def create

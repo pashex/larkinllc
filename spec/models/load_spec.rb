@@ -57,5 +57,29 @@ RSpec.describe Load, type: :model do
       end
     end
 
+    describe ".for_truck_and_date" do
+      def create_loads(date)
+        ['morning', 'noon', 'evening'].map do |n|
+          create :load, delivery_date: date, shift: n
+        end
+      end
+      let(:yesterday) { Date.current - 1.day }
+      let(:today) { Date.current }
+      let(:tomorrow) { Date.current + 1.day }
+
+      let!(:yesterday_loads) { create_loads(yesterday) }
+      let!(:today_loads) { create_loads(today) }
+      let!(:tomorrow_loads) { create_loads(tomorrow) }
+
+      it "should return loads for truck number and date" do
+        expect(Load.for_truck_and_date(1, yesterday).pluck(:shift)).to eq [2]
+        expect(Load.for_truck_and_date(2, yesterday).pluck(:shift)).to eq [1, 3]
+        expect(Load.for_truck_and_date(1, today).pluck(:shift)).to eq [1, 3]
+        expect(Load.for_truck_and_date(2, today).pluck(:shift)).to eq [2]
+        expect(Load.for_truck_and_date(1, tomorrow).pluck(:shift)).to eq [2]
+        expect(Load.for_truck_and_date(2, tomorrow).pluck(:shift)).to eq [1, 3]
+      end
+    end
+
   end
 end

@@ -1,5 +1,6 @@
 class Load < ActiveRecord::Base
   MAX_VOLUME = 1400.0
+  BASE_DATE =
 
   has_many :orders
   enum shift: { morning: 1, noon: 2, evening: 3 }
@@ -12,6 +13,11 @@ class Load < ActiveRecord::Base
   validate :check_reverse_orders_position
 
   scope :by_date, -> (date) { where(delivery_date: date) }
+
+  def self.for_truck_and_date(truck_number, date)
+    shifts = ((date - Date.parse('2014-01-01')).to_i + truck_number).odd? ? [1, 3] : [2]
+    self.where(delivery_date: date, shift: shifts)
+  end
 
   private
 
