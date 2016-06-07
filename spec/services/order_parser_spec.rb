@@ -2,21 +2,29 @@ require 'rails_helper'
 
 RSpec.describe OrderParser do
   describe '.perform' do
+    let(:example_filename) { Rails.root.join('spec/fixtures/weekly_schedule.csv') }
+    let(:short_example_filename) { Rails.root.join('spec/fixtures/weekly_schedule1.csv') }
+    let(:invalid_example_filename) { Rails.root.join('spec/fixtures/weekly_schedule2.csv') }
+
     context 'when shedule file is valid' do
       it 'should parse shedule csv and create orders' do
-        errors = OrderParser.perform(Rails.root.join('spec/fixtures/weekly_schedule.csv'))
+        errors = File.open(example_filename) do |file|
+          OrderParser.perform(file)
+        end
         expect(errors).to be_empty
         expect(Order.count).to eq 401
       end
 
       it 'should create locations without duplication' do
-        errors = OrderParser.perform(Rails.root.join('spec/fixtures/weekly_schedule1.csv'))
+        errors = File.open(short_example_filename) do |file|
+          OrderParser.perform(file)
+        end
         expect(errors).to be_empty
         expect(Location.count).to eq 11
       end
 
       it 'should create locations with all fields correctly' do
-        OrderParser.perform(Rails.root.join('spec/fixtures/weekly_schedule1.csv'))
+        File.open(short_example_filename) { |file| OrderParser.perform(file) }
         store_location = Location.find_by(name: 'Larkin LLC')
         client_location = Location.find_by(name: 'Dr. Hettie Conroy')
         attrs = %w(address city state zip country)
@@ -27,7 +35,7 @@ RSpec.describe OrderParser do
       end
 
       it 'should create orders with all fields correctly' do
-        OrderParser.perform(Rails.root.join('spec/fixtures/weekly_schedule1.csv'))
+        File.open(short_example_filename) { |file| OrderParser.perform(file) }
 
         first_order = Order.find_by(number: '500400090')
         second_order = Order.find_by(number: '500393641')
@@ -49,14 +57,14 @@ RSpec.describe OrderParser do
 
     context 'when shedule file is invalid' do
       it 'should parse shedule csv and create orders for right rows' do
-        errors = OrderParser.perform(Rails.root.join('spec/fixtures/weekly_schedule2.csv'))
+        errors = File.open(invalid_example_filename) { |file| OrderParser.perform(file) }
         expect(errors).not_to be_empty
         expect(Order.count).to eq 8
         expect(Location.count).to eq 7
       end
 
       it 'should return errors info for each bad row' do
-        errors = OrderParser.perform(Rails.root.join('spec/fixtures/weekly_schedule2.csv'))
+        errors = File.open(invalid_example_filename) { |file| OrderParser.perform(file) }
         expect(errors).to eq [
           ["row: 4", "Validation failed: Name can't be blank"],
           ["row: 5", "Validation failed: Destination should be different from the origin"],

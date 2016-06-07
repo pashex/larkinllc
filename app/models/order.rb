@@ -13,6 +13,8 @@ class Order < ActiveRecord::Base
 
   validates :origin, :destination, presence: true
   validate :check_difference_of_locations
+
+  validates :number, presence: true, if: :load
   validate :check_load_delivery_date, if: :load
   validate :check_load_shift, if: :load
   validate :check_load_volume, if: :load
