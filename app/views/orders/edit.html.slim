@@ -28,3 +28,12 @@ h1 = t('.header')
     = f.text_field :number
   = f.submit
 
+h4 = t('.split_order')
+= form_tag split_order_path(@order) do
+  = label_tag :new_volume
+  = text_field_tag :new_volume
+  = label_tag :new_quantity
+  = text_field_tag :new_quantity
+  = submit_tag t('.split')
+
+

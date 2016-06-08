@@ -1,5 +1,7 @@
 en:
   errors_in_csv: These lines have not been imported. Please fix errors in file and import again with UPDATE strategy
+  invalid_new_volume: New volume for order is invalid
+  invalid_new_quantity: New quantity for order is invalid
   sessions:
     new:
       enter: Enter
@@ -32,6 +34,7 @@ en:
       no_orders_for_date: No orders for this date
     edit:
       header: Edit order delivery information
+      split: Split order
     order:
       load: to Load
       up: Up 

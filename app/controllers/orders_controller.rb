@@ -1,6 +1,6 @@
 class OrdersController < ApplicationController
   before_action :parse_date
-  before_action :find_order, only: [:show, :edit, :update, :shift, :destroy]
+  before_action :find_order, only: [:show, :edit, :update, :shift, :split, :destroy]
 
   def index
     @loads = Load.by_date(@date).order(:shift).includes(orders: [:origin, :destination])
@@ -8,9 +8,6 @@ class OrdersController < ApplicationController
     orders = Order.where(load: nil).by_date(@date).includes(:origin, :destination)
     @shifted_orders = orders.shifted.order(:shift, volume: :desc)
     @not_shifted_orders = orders.not_specified.order(volume: :desc)
-  end
-
-  def show
   end
 
   def edit
@@ -32,12 +29,32 @@ class OrdersController < ApplicationController
     redirect_to orders_url(date: @date)
   end
 
-  def destroy
+  def split
+    new_volume = params[:new_volume].to_f
+    new_quantity = params[:new_quantity].to_i
+
+    flash.now[:errors] ||= []
+    flash.now[:errors] << I18n.t('invalid_new_volume') unless new_volume > 0 && new_volume < @order.volume
+    flash.now[:errors] << I18n.t('invalid_new_quantity') unless new_quantity > 0 && new_quantity < @order.quantity
+
+    if flash.now[:errors].empty?
+      @new_order = Order.new(@order.attributes.merge(id: nil, volume: @order.volume - new_volume, quantity: @order.quantity - new_quantity))
+      Order.transaction do
+        @order.update!(volume: new_volume, quantity: new_quantity)
+        @new_order.save!
+      end
+      redirect_to orders_url(date: @order.delivery_date)
+    else
+      render :edit
+    end
+  rescue Exception => e
+    flash.now[:errors] = e.message
+    render :edit
   end
 
   def import
     flash[:errors] = OrderParser.perform(params[:file], strategy: params[:strategy])
-    flash[:errors] << I18n.t('.errors_in_csv') unless flash[:errors].empty?
+    flash[:errors] << I18n.t('errors_in_csv') unless flash[:errors].empty?
     redirect_to dispatcher_url
   end
 

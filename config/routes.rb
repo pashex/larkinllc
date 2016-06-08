@@ -26,8 +26,9 @@ end
 
 Rails.application.routes.draw do
   constraints(DispatcherRequiredConstraint.new) do
-    resources :orders do
+    resources :orders, only: [:index, :edit, :update] do
       patch :shift, on: :member
+      post :split, on: :member
       post :import, on: :collection
     end
 
