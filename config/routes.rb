@@ -38,6 +38,7 @@ Rails.application.routes.draw do
 
     scope :dashboards, controller: :dashboards do
       get :dispatcher
+      delete :destroy_all
     end
 
     root to: 'dashboards#dispatcher', as: nil

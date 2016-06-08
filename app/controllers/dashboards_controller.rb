@@ -21,4 +21,11 @@ class DashboardsController < ApplicationController
     @dates = Load.where(completed: true).order(:delivery_date).select(:delivery_date).distinct.pluck(:delivery_date)
   end
 
+  def destroy_all
+    Order.delete_all
+    Load.delete_all
+    Location.delete_all
+    redirect_to dispatcher_url
+  end
+
 end

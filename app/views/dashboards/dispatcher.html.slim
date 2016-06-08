@@ -1,14 +1,17 @@
-h2 = t('.orders dates')
-h3 = t('.completed_dates')
-ul
-  - @completed_dates.each do |date|
-    li
-      = link_to "#{date}", orders_path(date: date)
-h3 = t('.uncompleted_dates')
-ul
-  - @uncompleted_dates.each do |date|
-    li
-      = link_to "#{date || 'Date not specified'}", orders_path(date: date)
+- unless @dates.empty?
+  h2 = t('.orders dates')
+- unless @completed_dates.empty?
+  h3 = t('.completed_dates')
+  ul
+    - @completed_dates.each do |date|
+      li
+        = link_to "#{date}", orders_path(date: date)
+- unless @uncompleted_dates.empty?
+  h3 = t('.uncompleted_dates')
+  ul
+    - @uncompleted_dates.each do |date|
+      li
+        = link_to "#{date || 'Date not specified'}", orders_path(date: date)
 
 h2 = t('.import new orders')
 = form_tag import_orders_path, multipart: true do
@@ -20,3 +23,7 @@ h2 = t('.import orders with update strategy')
   = hidden_field_tag :strategy, 'update'
   = file_field_tag :file
   = submit_tag
+
+h2 Clean orders and loads for testing purpose
+= link_to 'Destroy All', destroy_all_path, method: :delete, data: { confirm: 'Are you sure to delete all orders and loads?' }, class: 'btn btn-danger'
+
