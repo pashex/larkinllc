@@ -63,9 +63,10 @@ RSpec.describe Load, type: :model do
           create :load, delivery_date: date, shift: n
         end
       end
-      let(:yesterday) { Date.current - 1.day }
-      let(:today) { Date.current }
-      let(:tomorrow) { Date.current + 1.day }
+
+      let(:today) { Date.parse('2014-09-16') }
+      let(:yesterday) { today - 1.day }
+      let(:tomorrow) { today + 1.day }
 
       let!(:yesterday_loads) { create_loads(yesterday) }
       let!(:today_loads) { create_loads(today) }
