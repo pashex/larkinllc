@@ -59,7 +59,12 @@ class OrdersController < ApplicationController
 
   def import
     flash[:errors] = OrderParser.perform(params[:file], strategy: params[:strategy])
-    flash[:errors] << I18n.t('errors_in_csv') unless flash[:errors].empty?
+    if flash[:errors].empty?
+      flash[:errors] = nil
+      flash[:success] = I18n.t('sucess_import')
+    else
+      flash[:errors] << I18n.t('errors_in_csv')
+    end
     redirect_to dispatcher_url
   end
 

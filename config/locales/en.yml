@@ -1,5 +1,6 @@
 en:
   errors_in_csv: These lines have not been imported. Please fix errors in file and import again with UPDATE strategy
+  success_import: Orders have been imported successfull
   invalid_new_volume: New volume for order is invalid
   invalid_new_quantity: New quantity for order is invalid
   update_order_in_completed_load: Cannot update order in completed Load
