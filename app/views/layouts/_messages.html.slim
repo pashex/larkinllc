@@ -1,5 +1,5 @@
 - flash.each do |name, msg|
-  div.alert class="alert-#{ name == :success ? "success" : "danger" }"
+  div.alert class="alert-#{ name == 'success' ? "success" : "danger" }"
     - if msg.is_a?(String)
       div id="flash_#{name}" = msg
     - if msg.is_a?(Array)
