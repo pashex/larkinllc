@@ -10,7 +10,7 @@
 
 h2 = t('.unloaded_orders')
 
-table
+table.table.table-bordered
   - unless @shifted_orders.empty? && @not_shifted_orders.empty?
     = render 'shared/orders_table_header'
     = render @shifted_orders

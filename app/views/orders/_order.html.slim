@@ -26,6 +26,7 @@ tr
     - if !readonly
       - if load 
         = link_to t('.up'), shift_order_path(order, date: @date, reverse: true), method: :patch
+        br
         = link_to t('.down'), shift_order_path(order, date: @date), method: :patch
       - else
         = link_to t('.edit'), edit_order_path(order)

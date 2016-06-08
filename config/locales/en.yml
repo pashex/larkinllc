@@ -38,6 +38,8 @@ en:
       down: Down
 
   loads:
+    index:
+      loads_for_date: "%{date} Loads"
     load:
       load: Load
       completed: Completed        

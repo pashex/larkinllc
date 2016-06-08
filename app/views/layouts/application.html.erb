@@ -7,15 +7,20 @@
   <%= csrf_meta_tags %>
 </head>
 <body>
-<div>
-  <%= link_to "HOME", root_path %>
-  <% if current_user %>
-    <%= link_to "LOGOUT", logout_path, method: :post %>
-  <% end %>
-</div>
-<%= render "layouts/messages" %>
+  <nav class="navbar navbar-default" role="navigation">
+    <div class="container">
+      <ul class="nav nav-pills">
+        <li><%= link_to "HOME", root_path %></li>
+        <% if current_user %>
+          <li><%= link_to "LOGOUT", logout_path, method: :post %></li>
+        <% end %>
+      </ul>
+    </div>
+  </nav>
+  <div class="container">
+    <%= render "layouts/messages" %>
 
-<%= yield %>
-
+    <%= yield %>
+  </div>
 </body>
 </html>
