@@ -14,10 +14,15 @@ class OrdersController < ApplicationController
   end
 
   def update
-    unless @order.update(order_params)
-      flash[:errors] = @order.errors.full_messages
+    @order.attributes = order_params
+    if @order.load && @order.load.completed?
+      flash[:errors] = t('update_order_in_completed_load')
+    else
+      unless @order.save
+        flash[:errors] = @order.errors.full_messages
+      end
     end
-    redirect_to orders_url(date: @order.delivery_date)
+    redirect_to orders_url(date: @order.reload.delivery_date)
   end
 
   def shift
@@ -56,6 +61,11 @@ class OrdersController < ApplicationController
     flash[:errors] = OrderParser.perform(params[:file], strategy: params[:strategy])
     flash[:errors] << I18n.t('errors_in_csv') unless flash[:errors].empty?
     redirect_to dispatcher_url
+  end
+
+  def destroy
+    flash[:errors] = I18n.t('cannot_destroy_order_in_load') unless @order.destroy
+    redirect_to orders_url(date: @order.delivery_date)
   end
 
   private

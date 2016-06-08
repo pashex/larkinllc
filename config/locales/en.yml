@@ -2,6 +2,9 @@ en:
   errors_in_csv: These lines have not been imported. Please fix errors in file and import again with UPDATE strategy
   invalid_new_volume: New volume for order is invalid
   invalid_new_quantity: New quantity for order is invalid
+  update_order_in_completed_load: Cannot update order in completed Load
+  cannot_destroy_order_in_load: Cannot destroy order in load
+
   sessions:
     new:
       enter: Enter

@@ -18,6 +18,7 @@ class Order < ActiveRecord::Base
   validate :check_load_delivery_date, if: :load
   validate :check_load_shift, if: :load
   validate :check_load_volume, if: :load
+  before_destroy :check_load
 
   enum shift: { not_specified: 0, morning: 1, noon: 2, evening: 3 }
 
@@ -48,6 +49,10 @@ class Order < ActiveRecord::Base
     if (reverse? ? volume + load.reverse_volume : volume + load.volume) > Load::MAX_VOLUME
       errors.add :load, :max_volume_exceeded
     end
+  end
+
+  def check_load
+    !load
   end
 
 end

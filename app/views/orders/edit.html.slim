@@ -36,4 +36,7 @@ h4 = t('.split_order')
   = text_field_tag :new_quantity
   = submit_tag t('.split')
 
+h4 = t('.destroy_bad_order')
+= link_to t('destroy'), @order, method: :delete, class: 'btn btn-danger', data: { confirm: 'Are you sure to destroy order?' }
+
 
