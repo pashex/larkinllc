@@ -7,7 +7,7 @@ module OrderParser
   OUR_COMPANY = { name: 'Larkin LLC', address: '1505 S BLOUNT ST', city: 'RALEIGH' }
 
   def perform(file, strategy: :create)
-    errors = []
+    messages = {errors: [], warnings: []}
 
     CSV.read(file.path).each_with_index do |row, index|
       next if index == 0
@@ -49,12 +49,21 @@ module OrderParser
             next if Order.find_by(order_hash.merge(shift: Order.shifts[order_hash[:shift]]))
           end
           order = Order.create!(order_hash)
+          warning_messages = []
+          warning_messages << I18n.t('warnings.no_delivery_date') unless delivery_date
+          warning_messages << I18n.t('warnings.no_phone') unless order_hash[:phone].present?
+          warning_messages << I18n.t('warnings.no_number') unless order_hash[:number].present?
+          warning_messages << I18n.t('warnings.invalid_origin_zip') unless origin_hash[:zip] =~ /\A\d{5}\Z/
+          warning_messages << I18n.t('warnings.invalid_destination_zip') unless destination_hash[:zip] =~ /\A\d{5}\Z/
+          warning_messages << I18n.t('warnings.large_order') if order.volume > Load::MAX_VOLUME
+
+          messages[:warnings] = messages[:warnings] + warning_messages.map { |m| ["row: #{index}", "order uid: #{order.id}", "order number: #{order.number}", "order date: #{order.delivery_date}", m] }
         end
       rescue Exception => e
-        errors << ["row: #{index}", e.message]
+        messages[:errors] << ["row: #{index}", e.message]
       end
     end
-    errors
+    messages
   end
 
 end

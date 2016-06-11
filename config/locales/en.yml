@@ -1,10 +1,18 @@
 en:
+  warnings_in_csv: These lines have been imported successfuly, but should be probably corrected before put in load list
   errors_in_csv: These lines have not been imported. Please fix errors in file and import again with UPDATE strategy
   success_import: Orders have been imported successfull
   invalid_new_volume: New volume for order is invalid
   invalid_new_quantity: New quantity for order is invalid
   update_order_in_completed_load: Cannot update order in completed Load
   cannot_destroy_order_in_load: Cannot destroy order in load
+  warnings:
+    no_delivery_date: No delivery date in order, please specify it before put order in load
+    no_phone: No phone in order
+    no_number: No number in order, please add it before put order in load
+    invalid_origin_zip: Invalid origin ZIP code, use previous definition of origin
+    invalid_destination_zip: Invalid destination ZIP code, use previous definition of destination
+    large_order: Order volume exceedes maximum volume of truck. You should split this order
 
   sessions:
     new:
@@ -22,12 +30,17 @@ en:
               invalid_delivery_date: delivery date should be same as order delivery date
               invalid_shift: shift should be same as order shift
               max_volume_exceeded: max volume exceeded
+             
         load:
           attributes:
             orders:
               invalid_delivery_date: delivery date should be same as load delivery date
               invalid_shift: shift should be same as load shift
               invalid_reverse_positions: should be in the end of load list if reverse
+        location:
+          attributes:
+            zip:
+              invalid_format: should be 5 digits 
 
   orders:
     index:

@@ -14,7 +14,8 @@ class Order < ActiveRecord::Base
   validates :origin, :destination, presence: true
   validate :check_difference_of_locations
 
-  validates :number, presence: true, if: :load
+  validates :number, :delivery_date, presence: true, if: :load
+
   validate :check_load_delivery_date, if: :load
   validate :check_load_shift, if: :load
   validate :check_load_volume, if: :load
@@ -24,6 +25,9 @@ class Order < ActiveRecord::Base
 
   scope :shifted, -> { where.not(shift: 0) }
   scope :by_date, -> (date) { where(delivery_date: date) }
+
+  accepts_nested_attributes_for :origin
+  accepts_nested_attributes_for :destination
 
   private
 

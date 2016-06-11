@@ -9,7 +9,7 @@ class SessionsController < ApplicationController
     if login(params[:email], params[:password], true)
       redirect_to root_url
     else
-      flash.now[:alert] = t('.login_error')
+      flash.now[:danger] = t('.login_error')
       render :new
     end
   end

@@ -38,11 +38,12 @@ RSpec.describe Order, type: :model do
             "Load delivery date should be same as order delivery date"]
         end
 
-        it 'should add order to load with empty delivery date' do
+        it 'should not add order to load with empty delivery date' do
           second_order.update(delivery_date: nil)
           load.orders << second_order
-          expect(load.orders).to be_include(second_order)
-          expect(second_order.errors).to be_empty
+          expect(load.reload.orders).not_to be_include(second_order)
+          expect(second_order.errors.full_messages).to eq [
+            "Delivery date can't be blank"]
         end
       end
 
@@ -60,7 +61,7 @@ RSpec.describe Order, type: :model do
         it 'should add order with not specified shift to load with any shift' do
           second_order.update(shift: :not_specified)
           load.orders << second_order
-          expect(load.orders).to be_include(second_order)
+          expect(load.reload.orders).to be_include(second_order)
           expect(second_order.errors).to be_empty
         end
       end

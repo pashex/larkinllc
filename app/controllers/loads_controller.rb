@@ -10,13 +10,13 @@ class LoadsController < ApplicationController
     @loads = ['morning', 'noon', 'evening'].map do |shift|
        Load.new(delivery_date: @date, shift: shift)
     end
-    flash[:errors] = @loads.flat_map {|l| l.errors.full_messages}.uniq unless @loads.map(&:save).all?
+    flash[:danger] = @loads.flat_map {|l| l.errors.full_messages}.uniq unless @loads.map(&:save).all?
     redirect_to orders_url(date: @date)
   end
 
   def complete
     unless @load.update(completed: true)
-      flash[:errors] = @load.errors.full_messages
+      flash[:danger] = @load.errors.full_messages
      end
     redirect_to orders_url(date: @date)
   end

@@ -23,9 +23,10 @@ h1 = t('.header')
 = form_for @order do |f|
   = f.date_select :delivery_date
   = f.select :shift, Order.shifts.keys
-  - if @order.number.empty?
-    = f.label :number
-    = f.text_field :number
+  = f.label :phone
+  = f.text_field :phone
+  = f.label :number
+  = f.text_field :number
   = f.submit
 
 h4 = t('.split_order')

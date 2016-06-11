@@ -8,10 +8,16 @@ RSpec.describe OrderParser do
 
     context 'when shedule file is valid' do
       it 'should parse shedule csv and create orders' do
-        errors = File.open(example_filename) do |file|
+        messages = File.open(example_filename) do |file|
           OrderParser.perform(file)
         end
-        expect(errors).to be_empty
+        expect(messages[:errors]).to be_empty
+        expect(messages[:warnings].map { |w| [w[0], w[4]] }).to eq [
+          ["row: 44", I18n.t('warnings.invalid_origin_zip')],
+          ["row: 54", I18n.t('warnings.large_order')],
+          ["row: 249", I18n.t('warnings.no_delivery_date')],
+          ["row: 331", I18n.t('warnings.no_number')]
+        ]
         expect(Order.count).to eq 401
       end
 
@@ -19,18 +25,18 @@ RSpec.describe OrderParser do
         File.open(example_filename) do |file|
           OrderParser.perform(file)
         end
-        errors = File.open(example_filename) do |file|
+        messages = File.open(example_filename) do |file|
           OrderParser.perform(file, strategy: 'update')
         end
-        expect(errors).to be_empty
+        expect(messages[:errors]).to be_empty
         expect(Order.count).to eq 401
       end
 
       it 'should create locations without duplication' do
-        errors = File.open(short_example_filename) do |file|
+        messages = File.open(short_example_filename) do |file|
           OrderParser.perform(file)
         end
-        expect(errors).to be_empty
+        expect(messages[:errors]).to be_empty
         expect(Location.count).to eq 11
       end
 
@@ -68,15 +74,16 @@ RSpec.describe OrderParser do
 
     context 'when shedule file is invalid' do
       it 'should parse shedule csv and create orders for right rows' do
-        errors = File.open(invalid_example_filename) { |file| OrderParser.perform(file) }
-        expect(errors).not_to be_empty
-        expect(Order.count).to eq 8
-        expect(Location.count).to eq 7
+        messages = File.open(invalid_example_filename) { |file| OrderParser.perform(file) }
+        expect(messages[:errors]).not_to be_empty
+        expect(Order.count).to eq 7
+        expect(Location.count).to eq 6
       end
 
       it 'should return errors info for each bad row' do
-        errors = File.open(invalid_example_filename) { |file| OrderParser.perform(file) }
-        expect(errors).to eq [
+        messages = File.open(invalid_example_filename) { |file| OrderParser.perform(file) }
+        expect(messages[:errors]).to eq [
+          ["row: 1", "Validation failed: Zip should be 5 digits"],
           ["row: 4", "Validation failed: Name can't be blank"],
           ["row: 5", "Validation failed: Destination should be different from the origin"],
           ["row: 6", "Validation failed: City can't be blank"],

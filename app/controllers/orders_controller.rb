@@ -16,10 +16,10 @@ class OrdersController < ApplicationController
   def update
     @order.attributes = order_params
     if @order.load && @order.load.completed?
-      flash[:errors] = t('update_order_in_completed_load')
+      flash[:danger] = t('update_order_in_completed_load')
     else
       unless @order.save
-        flash[:errors] = @order.errors.full_messages
+        flash[:danger] = @order.errors.full_messages
       end
     end
     redirect_to orders_url(date: @order.reload.delivery_date)
@@ -38,11 +38,11 @@ class OrdersController < ApplicationController
     new_volume = params[:new_volume].to_f
     new_quantity = params[:new_quantity].to_i
 
-    flash.now[:errors] ||= []
-    flash.now[:errors] << I18n.t('invalid_new_volume') unless new_volume > 0 && new_volume < @order.volume
-    flash.now[:errors] << I18n.t('invalid_new_quantity') unless new_quantity > 0 && new_quantity < @order.quantity
+    flash.now[:danger] ||= []
+    flash.now[:danger] << I18n.t('invalid_new_volume') unless new_volume > 0 && new_volume < @order.volume
+    flash.now[:danger] << I18n.t('invalid_new_quantity') unless new_quantity > 0 && new_quantity < @order.quantity
 
-    if flash.now[:errors].empty?
+    if flash.now[:danger].empty?
       @new_order = Order.new(@order.attributes.merge(id: nil, volume: @order.volume - new_volume, quantity: @order.quantity - new_quantity))
       Order.transaction do
         @order.update!(volume: new_volume, quantity: new_quantity)
@@ -53,23 +53,27 @@ class OrdersController < ApplicationController
       render :edit
     end
   rescue Exception => e
-    flash.now[:errors] = e.message
+    flash.now[:danger] = e.message
     render :edit
   end
 
   def import
-    errors = OrderParser.perform(params[:file], strategy: params[:strategy])
-    if errors.empty?
+    messages = OrderParser.perform(params[:file], strategy: params[:strategy])
+    unless messages[:warnings].empty?
+      flash[:warning] = messages[:warnings]
+      flash[:warning] << I18n.t('warnings_in_csv')
+    end
+    if messages[:errors].empty?
       flash[:success] = I18n.t('success_import')
     else
-      flash[:errors] = errors
-      flash[:errors] << I18n.t('errors_in_csv')
+      flash[:danger] = messages[:errors]
+      flash[:danger] << I18n.t('errors_in_csv')
     end
     redirect_to dispatcher_url
   end
 
   def destroy
-    flash[:errors] = I18n.t('cannot_destroy_order_in_load') unless @order.destroy
+    flash[:danger] = I18n.t('cannot_destroy_order_in_load') unless @order.destroy
     redirect_to orders_url(date: @order.delivery_date)
   end
 
@@ -84,7 +88,7 @@ class OrdersController < ApplicationController
   end
 
   def order_params
-    params.require(:order).permit(:load_id, :delivery_date, :shift, :number)
+    params.require(:order).permit(:load_id, :delivery_date, :shift, :number, :phone)
   end
 
 end
