@@ -41,7 +41,7 @@ en:
         location:
           attributes:
             zip:
-              invalid_format: should be 5 digits 
+              invalid_format: format should be like 12345 or 12345-1234 
 
   orders:
     index:

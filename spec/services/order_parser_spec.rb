@@ -83,7 +83,7 @@ RSpec.describe OrderParser do
       it 'should return errors info for each bad row' do
         messages = File.open(invalid_example_filename) { |file| OrderParser.perform(file) }
         expect(messages[:errors]).to eq [
-          ["row: 1", "Validation failed: Zip should be 5 digits"],
+          ["row: 1", "Validation failed: Zip format should be like 12345 or 12345-1234"],
           ["row: 4", "Validation failed: Name can't be blank"],
           ["row: 5", "Validation failed: Destination should be different from the origin"],
           ["row: 6", "Validation failed: City can't be blank"],
