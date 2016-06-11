@@ -1,6 +1,7 @@
 en:
   warnings_in_csv: These lines have been imported successfuly, but should be probably corrected before put in load list
   errors_in_csv: These lines have not been imported. Please fix errors in file and import again with UPDATE strategy
+  error_import_file: Error when import CSV file
   success_import: Orders have been imported successfull
   invalid_new_volume: New volume for order is invalid
   invalid_new_quantity: New quantity for order is invalid

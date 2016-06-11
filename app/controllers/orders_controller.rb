@@ -69,6 +69,10 @@ class OrdersController < ApplicationController
       flash[:danger] = messages[:errors]
       flash[:danger] << I18n.t('errors_in_csv')
     end
+  rescue Exception => e
+    flash[:danger] = [I18n.t('error_import_file')]
+    flash[:danger] << e.message
+  ensure
     redirect_to dispatcher_url
   end
 

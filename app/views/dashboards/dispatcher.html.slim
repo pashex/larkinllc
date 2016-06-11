@@ -15,13 +15,13 @@
 
 h2 = t('.import new orders')
 = form_tag import_orders_path, multipart: true do
-  = file_field_tag :file
+  = file_field_tag :file, required: true
   = submit_tag 'Import'
 
 h2 = t('.import orders with update strategy')
 = form_tag import_orders_path, multipart: true do
   = hidden_field_tag :strategy, 'update'
-  = file_field_tag :file
+  = file_field_tag :file, required: true
   = submit_tag 'Import only new'
 
 h2 Clean orders and loads for testing purpose
